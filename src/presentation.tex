@@ -81,12 +81,14 @@
 \graphicspath{ {../img/} }%setta il path predefinito per le immagini
 \usepackage[utf8]{inputenc}
 \usepackage{hyperref}
+\setlength{\columnseprule}{0.4pt}
+\usepackage{multicol}
 
 %----------------------------------------------------------------------------------------
 %	TITLE PAGE
 %----------------------------------------------------------------------------------------
 
-\title[Trajectory Clustering survey]{Trajectory Clustering Alghorithms - GCMP vs CTM. } % The short title appears at the bottom of every slide, the full title is only on the title page
+\title[Trajectory Clustering Comparison]{Trajectory Clustering Alghorithms - GCPM vs DSC vs CTM. } % The short title appears at the bottom of every slide, the full title is only on the title page
 
 \author{Federico Naldini} % Your name
 \institute[Università di Bologna] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
@@ -95,7 +97,7 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
 \medskip
 \textit{federico.naldini3@studio.unibo.it} % Your email address
 }
-\date{15/10/2019} % Date, can be changed to a custom date
+\date{18/10/2019} % Date, can be changed to a custom date
 
 \begin{document}
 
@@ -104,472 +106,273 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
 \end{frame}
 
 %------------------------------------------------
-\begin{frame}
-\frametitle{Overview} % Table of contents slide, comment this block out to remove it
-\tableofcontents % Throughout your presentation, if you choose to use \section{} and \subsection{} commands, these will automatically be printed on this slide as an overview of your presentation
-\end{frame}
-%------------------------------------------------
-%----------------------------------------------------------------------------------------
-%	PRESENTATION SLIDES
-%----------------------------------------------------------------------------------------
-
-%------------------------------------------------
-
-\end{itemize}
-
-\end{frame}
 
 \begin{frame}
-
-\frametitle{Similarità basata sulla densità}
-
-\begin{itemize}
-
-\item \textbf{Convoy}: Identifica raggruppamenti di oggetti che hanno percorso traiettorie simili per almeno \textit{T} istanti consecutivi, negli algoritmi classici prima viene applicato un algoritmo di \textit{clustering} basato sulla densità e successivamente viene effettuato \textit{pruning} sulla base del criterio temporale sopraespresso.
-
-\item \textbf{Swarm}: Rispetto a \textbf{Convoy} scarta il vincolo di sequenzialità degli istanti temporali, basandosi solo sui vincoli spaziali.
-
-\item \textbf{Platoon}:Rimuove il vincolo descritto da \textbf{Convoy}, sostituendolo con un vincolo locale sugli istanti consecutivi
-tramite un parametro L che identifica la lunghezza 
-minima di ogni sottosequenza di istanti consecutivi.
-
-Inoltre aggiunge un altro parametro K, che identifica la lunghezza minima della sequenza temporale \textit{T} di ogni raggruppamento.
-
-  
-
-\end{itemize}
-
-\end{frame}
-
-
-\begin{frame}
-
-\frametitle{Similarità basata sulla distanza}
-
-\begin{itemize}
-
-\item \textbf{Flock}: La stessa idea presentata in \textbf{Convoy}, ma utilizzando una metrica di similarità basata sulla definizione
-di uno spazio chiamato \textit{disk} di raggio \textit{r}.
-
-
-\item \textbf{Group}:Rilassa il vincolo temporale introdotto da \textbf{Flock} introducendo un vincolo sulla lunghezza delle sequenze di istanti consecutivi, analogamente a quanto fatto in \textit{Platoon}; tuttavia a differenza di quest'ultimo non introduce un vincolo sulla lunghezza totale della sequenza.
-
-
-\end{itemize}
-
-\end{frame}
-
-
-
-%------------------------------------------------
-
-
-
-\subsection{Obiettivi e definizione del problema e dei parametri}
-
-\begin{frame}
-\frametitle{General Co-movement Patter Mining}
-Il framework \textbf{GCMP} si pone come obiettivo di mettere a disposizione degli utilizzatori una piattaforma configurabile per realizzare tutte le tipologie di \textit{Co-movement mining} sopradescritte.
-
-In particolare definisce diversi parametri per la definizione del problema:
-\end{frame}
-
-\begin{frame}
-\frametitle{General Co-movement Patter Mining: Parametri 1}
-
-\begin{itemize}
-
-\item \textbf{M}: Numero minimo di elementi presenti in un raggruppamento per considerarlo interessante.
-\item \textbf{K}: Numero minimo di istanti temporali in cui un certo raggruppamento esiste.
-
-\end{itemize}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{General Co-movement Patter Mining: Parametri 2}
-
-\begin{itemize}
-
-\item \textbf{L}: Data una sequenza temporale di istanti \textit{T}, si identificano \textit{z} sottosequenze tali che ogni sottosequenza è composta da istanti consecutivi(ad esempio con \textit{T} = (1,2,3,5,6) si ottengono due sottosequenze \textit{T'} = 
-(1,2,3) e \textit{T''} = (5,6)); \textbf{L} identifica la lunghezza minima accettabile di tutte le \textit{z} sottosequenze così individuate(ad esempio con \textbf{L} = 3 la sequenza non rispetta il vincolo, mentre con \textbf{L} = 2 sì).
-
-Una sequenza che rispetta il vincolo sopradescritto viene definita \textit{L-consecutive}
-\item \textbf{G}:  Data una sequenza temporale di istanti \textit{T}, \textbf{G} identifica il massimo \textit{skew} accettabile tra un elemento della sequenza e il successivo. Una sequenza si definisce \textit{G-connected} se per ogni coppia di elementi consecutivi al suo interno 
-lo \textit{skew} in questione è minore o uguale a \textbf{G} 
-
-\end{itemize}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{General Co-movement Patter Mining: Definizione}
-
-Un \textbf{GCPM} trova un set di oggetti \textit{O}, rimasti assieme per una sequenza di istanti \textit{T} che soddisfa i seguenti vincoli:
-
-\begin{itemize}
-
-\item \textit{Closeness}: per ogni istante di \textit{T}, gli oggetti \textit{O} devono appartenere allo stesso \textit{cluster}.
-\item \textit{Significance}: La dimensione del raggruppamento deve essere maggiore di \textbf{M}.
-\item \textit{Duration}: La dimensione di \textit{T} deve essere maggiore di \textbf{K}.
-\item \textit{Consecutiveness}: \textit{T} è \textit{L-consecutive}.
-\item \textit{Connection}: \textit{T} è \textit{G-connected}.
-
-
-\end{itemize}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{General Co-movement Patter Mining: Parametri 3}
-
-Configurando i vari parametri, posso ottenere le cinque tipologie di \textit{Co-movements}
-
-\begin{center}
-\includegraphics[scale=0.4]{ParametersConfiguration} 
-\end{center}
-
-\end{frame}
-
-
-
-\subsection{Algoritmo di risoluzione}
-
-\begin{frame}
-	
-	\frametitle{Overview}
-	
-	L'algoritmo di risoluzione proposto dal framework \textit{GCPM} si compone di tre fasi:
-	
-	\begin{itemize}
+	\frametitle{Comparison: Overview}
+	\begin{columns}
 		
-		\item \textbf{Generazione degli snapshot}
+		\column{.3\columnwidth}
+		\begin{center}
+			\textbf{\textit{\huge{GCMP}}}
+			
+		\end{center}
 		
-		\item \textbf{Star Partitioning}
+		\column{.3\columnwidth}
+		\begin{center}
+			\textbf{\textit{\huge{DSC}}}
+			
+		\end{center}
 		
-		\item \textbf{Apriori Enumeration}
-	\end{itemize}
-
-Il risultato final dell'algoritmo consiste in una serie di tuple nella forma  \textless \textit{O,T}\textgreater,  dove \textit{O} è un insieme di oggetti identificati da un ID univoco, 
-mentre \textit{T} rappresenta la sequenza temporale per cui l'insieme di oggetti \textit{O} ha viaggiato in luoghi vicini.
-	
-\end{frame}	
-
-\begin{frame}
-	\frametitle{Preprocessing dei dati}
-	Unica operazione da eseguire per il preprocessing è l'unificazione di tutti i dati temporali alla stessa scala di misura:
-	è importante che fra le misure temporali delle varie traiettorie sia definita una scala e dei criteri di misura che permettano di determinare se un istante è venuto o meno prima di un altro, 
-	se due istanti sono consecutivi.
-\end{frame}
-
-\subsubsection{Generazione degli Snapshot}
-
-\begin{frame}
-	\frametitle{Generazione degli snapshot 1}
-	Il primo passo dell'algoritmo consiste nella generazione degli \textit{Snapshots}, che altro non sono che raggruppamenti di oggetti in uno specifico istante temporale \textit{t}
-	
-\end{frame}
-
-\begin{frame}
-	\frametitle{Generazione degli snapshot 2}
-	Ogni traiettoria associata ad un oggetto viene scomposta nell' insieme di punti che la compongono \textit{P}, ciascun punto \textit{p} viene poi aggregato in un nuovo insieme, chiamato \textit{P'} sulla base dell'attributo \textit{p.t}, ovvero la sua coordinata temporale.
-	
-	
-\end{frame}
-
-\begin{frame}
-	\frametitle{Generazione degli snapshot 3}
-	Su ogni \textit{P'} così individuato viene applicato un algoritmo di clustering(\textit{DBSCAN}
-	nel caso si necessiti di un algoritmo \textit{density based }, \textit{disk-based clustering} qualora si voglia utilizzare una metrica basata sulla distanza).
-	I clustering di oggetti così individuati sono raggruppati in un set e vengono associati all'istante temporale \textit{t} che identifica \textit{P'}.
-	
-	Gli \textit{Snapshots} sono dunque nella forma \textless \textit{t, S(t)} \textgreater, dove \textit{t} è l'istante temporale mentre \textit{S(t)} è il set di clusters associato 
-\end{frame}
-
-\subsubsection{Star Partitioning}
-
-\begin{frame}
-	\frametitle{G \textsubscript{t} e G\textsubscript{A}}
-Dato uno \textit{snapshot s\textsubscript{i}} definiamo il grafo \textit{G\textsubscript{ti}} come un grafo dove i nodi sono tutti gli oggetti del dataset e due nodi sono connessi da un arco se e solo se appartengono a uno stesso cluster.
-Definiamo \textit{G\textsubscript{A}}, chiamato anche \textit{Associated Graph}, come l'insieme di tutti i \textit{G\textsubscript{i}} individuati dagli \textit{snapshot}:
-
-L'insieme dei nodi sarà ancora una volta l'insieme degli oggetti e due nodi saranno connessi se compaiono all'interno di uno stesso cluster di un qualunque \textit{snapshot}.
-Essendo possibile che due oggetti compaiano in più \textit{snapshot} all'interno di uno stesso cluster, sugli archi di questo grafo verrà mantenuta traccia degli istanti temporali in cui due oggetti compaiono nello stesso cluster. 
-\end{frame}
-
-\begin{frame}
-	\frametitle{Directed star}
-	\textit{G\textsubscript{A}} rappresenta il punto di partenza per catturare le relazioni tra coppie di oggetti, tuttavia non essendo  \textit{G\textsubscript{A}} un grafo orientato, occorre una tecnica per attraversare il grafo in maniera efficace e evitare di individuare coppie di nodi già visitate.
-	
-	\textbf{Directed Star} realizza tale struttura in due passi:
-	\begin{enumerate}
-		\item viene realizzato un ordinamento globale degli oggetti.
-		\item si scorre \textit{G\textsubscript{A}} partendo dal nodo con Global ID=1, per ciascun nodo N si prendono in considerazione tutti i suoi vicini(ovvero connessi con un arco) con Global ID\textgreater   N.Global ID, vengono poi generate tutte le coppie 
-		\textless \textit{N, V\textsubscript{i}: T(i)}\textgreater  dove \textit{N} è il nodo esaminato,
-		\textit{V\textsubscript{i}} è l'i-esimo nodo vicino e \textit{T(i)} è la sequenza di istanti temporali contenuta nell'arco tra \textit{N} e \textit{V\textsubscript{i}}
-	\end{enumerate}	
-\end{frame}
-
-\begin{frame}
-	\frametitle{Ordinamento globale}
-	Data la natura scalabile dell'algoritmo di generazione delle coppie sopracitato, è fondamentale che nel criterio di ordinamento e numerazione si scelga un criterio che permetta ad ogni nodo di avere circa lo stesso numero di vicini.
-	
-	Dati \textit{n} oggetti, ci sono \textit{n!} possibili ordinamenti.
-	
-	Utilizzare un criterio di ordinamento random, come ad esempio ordinando sugli IDs degli oggetti da performance tutto sommato accettabili.
-\end{frame}
-
-\subsubsection{Apriori Enumeration}
-
-\begin{frame}
-	\frametitle{Definizione di monotonicità}
-	Dato un \textit{GCMP} con un objectset \{\textit{o\textsubscript{1}, ..., o\textsubscript{n}}\} , la fase di \textbf{Star Partitioning} produce coppie nella forma 
-	\textless \textit{o\textsubscript{i}, o\textsubscript{j}. T} \textgreater.
-	In linea teorica dovrebbe essere possibile applicare il principio \textit{Apriori} nella generazione dei candidati, tuttavia è facile dimostrare che la proprietà della monotonicità non vale per queste tuple.
-\end{frame}
-
-\begin{frame}
-	\frametitle{Monotonicità classica}
-Date due sequenze: 
-
-	\textless \textit{o\textsubscript{i}, o\textsubscript{j}. 1,2,3,6} \textgreater
-	
-		\textless \textit{o\textsubscript{i}, o\textsubscript{z}. 1,2,3,7} \textgreater
+		\column{.3\columnwidth}
+		\begin{center}
+			\textbf{\textit{\huge{CMT}}}
+			
+		\end{center}
+	\end{columns}
+	\begin{columns}
 		
-		Con \textbf{L} = 2, \textbf{K} = 3 e \textbf{G} = 2
+		\column{.3\columnwidth}
 		
-		E' intuitivo vedere che che entrambe le sequenze non risultano  \textit{L-Consecutive}.
-		
-		Al contrario, il superset ottenuto fondendo le due sequenze:
-		
-		\textless \textit{o\textsubscript{i},o\textsubscript{j}  ,o\textsubscript{z}. 1,2,3} \textgreater
+	Framework dedicato per il riconoscimento di \textit{Co-movement patterns} in maniera distribuita.
 		
 		
-		Risulta \textit{L-Consecutive}.
+		\column{.3\textwidth}
+	
+			Framework che, dato un insieme di traiettorie, riconosce e clusterizza le \textit{sub-trajectories} estratte da queste.
 		
-		E' quindi dimostrato che occorre trovare una nuova definizione di monotonicità.
+		\column{.3\textwidth}
 		
-\end{frame}
+		Basandosi su \textit{frequent itemset mining}, individua oggetti  che hanno viaggiato assieme per un insieme di istanti non continui.
+
+	\end{columns}
+\end{frame}     
 
 \begin{frame}
-	\frametitle{Tre nuovi concetti}
-	Per giungere a una nuova definizione di monotonicità serve introdurre tre nuovi concetti:
+		\frametitle{Comparison: criterio spaziale}
+		\begin{columns}
+			
+			\column{.3\columnwidth}
+			\begin{center}
+				\textbf{\textit{\huge{GCMP}}}
+				
+			\end{center}
+		
+			\column{.3\columnwidth}
+		\begin{center}
+			\textbf{\textit{\huge{DSC}}}
+			
+		\end{center}
 	
-	\begin{itemize}
-		\item \textbf{Maximal G-Connected sequence}
-		\item \textbf{Decomposable sequence}
-		\item \textbf{Sequence semplification}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}
-	
-	\frametitle{Maximal G-connected sequence}
-	\textit{T'} è definibile come 
-	\textit{MGS} di \textit{T} se \textit{T'} è sottosequenza di \textit{T} e non esiste \textit{T''} tale che \textit{T'} è sottosequenza di \textit{T''} e \textit{T''} è \textit{G-connected}.
-	
-	Ogni sequenza può avere \textit{n} MGS di dimensioni differenti.
-	
-	Ogni \textit{MGS} gode delle seguenti proprietà: 
-	\begin{enumerate}
-		\item Ogni \textit{MGS} è disgiunta dalle altre se non per un elemento in comune.
-		\item Data una sequenza, l'unione di tutte le sue \textit{MGS} dà come risultato la sequenza stessa.
-		\item Date due sequenze \textit{T\textsubscript{1}} e \textit{T\textsubscript{2}} dove
-		\textit{T\textsubscript{1}} è sotto-sequenza di \textit{T\textsubscript{2}}, allora per ogni \textit{MGS} di \textit{T\textsubscript{1}} si può trovare una \textit{MGS} di 
-		\textit{T\textsubscript{2}} tale che la \textit{MGS} di \textit{T\textsubscript{1}} sia sottosequenza della \textit{MGS} di \textit{T\textsubscript{2}}     
-	\end{enumerate}
-	
-	\end{frame}
-
-
-\begin{frame}
-	\frametitle{Decomposable sequence}
-	Data una sequenza \textit{T}, questa viene definita come decomponibile se ogni sua \textit{MGS} è \textit{L-consecutive} e lunga almeno \textbf{K} elementi.
-\end{frame}
-
-\begin{frame}
-	\frametitle{Sequence simplification}
-	Data una sequenza \textit{T}, viene prodotta una nuova sequenza \textit{T'} tramite una funzione \textit{Sim} che si compone di due passaggi: 
-	\begin{enumerate}
-		\item \textbf{f-step}: rimuove tutti i segmenti di \textit{T} che non sono \textit{L-consecutive}.
-		\item \textbf{g-step} tra le \textit{MGS} ricavate dalla sequenza uscita dal passo precedente, rimuove quelle con dimensioni minori di \textbf{K}.
-	\end{enumerate}
-\end{frame}
-
-\begin{frame}
-	\frametitle{Nuova monotonicità}
-   Dato un canditato \textit{C = \{O:T\}} dove \textit{O} è una sequenza di oggetti e \textit{T} una sequenza temporale, se \textit{Sim(T)} = $\emptyset$ allora il candidato può essere eliminato e così tutte le sue soprasequenze.
-\end{frame}
-
-\begin{frame}
-	\frametitle{Algoritmo aPriori}
-	\begin{enumerate}
-		\item Ogni coppia va a generare il livello base della struttura
-		\item Viene fatto pruning sulle coppie basandosi sulla funzione di semplificazione \textit{Sim}
-		\item Tramite un indicatore di livello, vengono generati dei candidati di dimensione del livello, il join tra due candidati del livello precedente \textit{C\textsubscript{1}} e
-		 \textit{C\textsubscript{2}} viene effettuato unendo gli object-set e intersecando le sequenze temporali.
-		 \item Per ogni nuovo candidato viene calcolata la semplificazione e viene fatto pruning di conseguenza.
-		 
-		 Candidati che per uno dei vincoli parametrici non possono generare ulteriori candidati sono scartati
-		 
-		 \item Per migliorare le performance, si utilizza il principio della \textit{forward closure}: ogni pattern valido nei termini dei parametri espressi viene mandato in output.
-	\end{enumerate}
-\end{frame}
-
-\begin{frame}
-	\frametitle{Output}
-	Un set di candidati nella seguente forma: 
-	
+		\column{.3\columnwidth}
 	\begin{center}
-		\huge  \textit{C = \{O:T\}} 
+		\textbf{\textit{\huge{CMT}}}
+		
 	\end{center}
-
-
-
-
-	
-	
-\end{frame}
-
-\begin{frame}
-	\frametitle{Flow del framework}
-
-\includegraphics[scale=0.25]{GCMP-flow}
-	
-\end{frame}
-
-
-
-
-\section{Subtrajectory Clustering}
-
-\begin{frame}
-	\frametitle{Distribuited Subtrajectory Clustering overview}
-	
-	Il problema del \textit{Distribuited Subtrajectory Clustering} viene suddiviso in tre passi:
-	
-	\begin{itemize}
-		\item \textbf{Subtrajectory Join}
-		\item \textbf{Trajectory Segmentation}
-		\item \textbf{Clustering and Outlier detection}
-	\end{itemize}
-
-In letteratura ci sono tante possibili soluzioni per affrontare il problema, ma nessuna di queste utilizza un approccio distribuito.
-\end{frame}
+		\end{columns}
+		\begin{columns}
+			
+			\column{.3\columnwidth}
+			
+			Utilizza un algoritmo di clustering 
+			\textit{density-based} o \textit{distance-based}
+		
+			
+				\column{.3\textwidth}
+		
+			Impiega una variante pesata di \textit{LCSS} che definisce un range spazio-temporale
+			
+				\column{.3\textwidth}
+			    
+				Utilizza un criterio di raggruppamento basato sulla divisione dell'area
+				in cui si muovono gli oggetti in celle
+		\end{columns}
+	\end{frame}     
 
 \begin{frame}
-	\frametitle{Formulazione del problema}
-	Dato \textit{D} come un set di traiettoria, si identifica \textit{r} come una traiettoria composta da \textit{timestamp location}, ovvero dati nella forma \textless (\textit{loc\textsubscript{i}, t\textsubscript{i}})\textgreater, lunga \textit{n}.
-	
-	Data una traiettoria \textit{r} si definisce sotto-traiettoria l'insieme dei punti 
-	
-	\{\textit{r\textsubscript{i},..,r\textsubscript{j}}\} con \textit{i} \textgreater 1 e \textit{j} \textless \textit{n}
-\end{frame}
+	\frametitle{Comparison: criterio temporale}
+	\begin{columns}
+		
+		\column{.3\columnwidth}
+		\begin{center}
+			\textbf{\textit{\huge{GCMP}}}
+			
+		\end{center}
+		
+		\column{.3\columnwidth}
+		\begin{center}
+			\textbf{\textit{\huge{DSC}}}
+			
+		\end{center}
+		
+		\column{.3\columnwidth}
+		\begin{center}
+			\textbf{\textit{\huge{CMT}}}
+			
+		\end{center}
+	\end{columns}
+	\begin{columns}
+		
+		\column{.3\columnwidth}
+		
+		\textit{Apriori Enumeration}: consente il pruning degli insiemi di oggetti
+		che non rispettano i criteri di \textit{L-Consecutivness} e \textit{G-connection}
+		
+		
+		\column{.3\textwidth}
+		
+		Impiega una variante pesata di \textit{LCSS} che definisce un range spazio-temporale
+		
+		\column{.3\textwidth}
+		
+		Consente di aggiungere la dimensione temporale alle celle.
+		
+	\end{columns}
+\end{frame}    
 
 \begin{frame}
-	\frametitle{Similarità tra le traiettorie}
-	Per riuscire a ottenere una metrica resistente a traiettorie di lunghezza diversa, con scale temporali diverse e mancanza di coordinamento, si è scelto di utilizzare una variante pesata di \textit{LCSS} con alcuni parametri collegati:
-	\begin{itemize}
-		\item $\epsilon$\textsubscript{t}: specifica il range temporale entro cui due punti sono considerati vicini.
-			\item $\epsilon$\textsubscript{sp}: specifica il range spaziale entro cui due punti sono considerati vicini.
-	\end{itemize}
-\end{frame}
-
-
-\subsection{DSC Alghorithm}
-
-\subsubsection{Subtrajectory Join}
-
-\begin{frame}
-	\frametitle{Subtrajectory Join: idea}
-	Primo dei tre passi dell'algortimo, per ogni traiettoria \textit{r} $\in$ \textit{D} si cercano tutti gli oggetti con relative porzioni che si sono mossi in uno spaziotempo vicino a quello della traiettoria.
-	
-	Ciò viene ottenuto con un'operazione di \textit{Self Join}. per ogni coppia di traiettorie \textit{r} e \textit{s} vengono ricercate e trovate tutte le sotto-traiettorie comuni con una certa durata, candidate alla \textit{Long Common Sub Sequence}.
-	
-	Definendo formalmente: Date una tolleranza spaziale  $\epsilon$\textsubscript{sp} e una temporale  $\epsilon$\textsubscript{t} e un limite inferiore alla durata temporale $\delta$\textsubscript{t}, si recuperano tutte le coppie (\textit{r', s'}) $\in$ D tali che 
-	la durata di entrambe le sotto-sequenze è maggiore della soglia $\delta$\textsubscript{t} e
-	$\forall$ \textit{r\textsubscript{i}} $\in$ \textit{r'} $\exists$ \textit{s\textsubscript{j}} $\in$ 
-	\textit{s'} tale che \textit{d\textsubscript{s}(r\textsubscript{i}, s\textsubscript{j})} e 
-	\textit{d\textsubscript{t}(r\textsubscript{i}, s\textsubscript{j})}
-\end{frame}
-
-\begin{frame}
-	\frametitle{Subtrajectory Join: implementazione}
-Per quanto riguarda l'implementazione del \textbf{Subtrajectory Join} si usa \textit{DJT}, che si compone di due fasi:
+	\frametitle{Comparison: parametri in gioco}
+	\begin{columns}
+		
+		\column{.3\columnwidth}
+		\begin{center}
+			\textbf{\textit{\huge{GCMP}}}
+			
+		\end{center}
+		
+		\column{.3\columnwidth}
+		\begin{center}
+			\textbf{\textit{\huge{DSC}}}
+			
+		\end{center}
+		
+		\column{.3\columnwidth}
+		\begin{center}
+			\textbf{\textit{\huge{CMT}}}
+			
+		\end{center}
+	\end{columns}
+	\begin{columns}
+		
+		\column{.3\columnwidth}
 
 \begin{itemize}
-	\item \textbf{Join}: fase in cui dati i punti in un certo intervallo temporale  viene calcolata la vicinanza con ogni altro punto dello stesso intrevallo.
-	\item \textbf{Refine}: fase in cui le traiettorie vengono riunificate portandosi dietro il loro vicinato.
+	\item \textbf{M}: numero minimo di elementi
+	\item \textbf{K}: numero minimo di istanti
+	\item \textbf{L}: lunghezza minima sottosequenze consecutive
+	\item \textbf{G}: massimo intervallo tra un istante e il successivo
 \end{itemize}
-
-Come preprocessing viene fatta un operazione di \textit{Repartitioning}, in cui le traiettorie sono scomposte nei loro punti e questi sono divisi in partizioni con stessa densità sulla base del tempo.
-
-\end{frame}
-
-\subsubsection{Trajectory Segmentation}
-
-\begin{frame}
-	\frametitle{Trajectory Segmentation: idea}
-	Secondo dei tre passi dell'algoritmo, dato in ingresso una traiettoria e il suo vicinato, produce uno split in \textit{m} sottotraiettorie sulla base di cambiamenti nella composizione del vicinato
-\end{frame}
-
-\begin{frame}
-	\frametitle{Trajectory Segmentation: implementazione}
-    Vengono individuati due possibili metodi per la ricerca di cambiamenti nel vicinato:
-    \begin{itemize}
-    	\item \textbf{TSA\textsubscript{1}}: individua le sotto-traiettorie mediante un cambiamento di densità nel vicinato.
-    	\item \textbf{TSA\textsubscript{2}}: individua le sotto-traiettorie sulla base di un cambiamento nella composizione del vicinato.
-    \end{itemize}
-
-A prescindere dal criterio utilizzato, l'algoritmo si basa su due \textit{Sliding windows} che scorrono sulla traiettoria con un certo scarto temporale.
-
-Queste finestre sono caratterizzate dal parametro $\omega$ che individua la dimensione della finestra in termini di numero di elementi e $\tau$ che invece identifica la soglia di segmentazione per una sottotraiettoria.
-\end{frame}
-
-\subsubsection{Subtrajectory Clustering}
-
-\begin{frame}
-		\frametitle{Subtrajectory Clustering: idea}
-		Terzo dei tre passi dell'algoritmo, prende in ingresso le sotto-traiettorie individuate al passo precedente e le clusterizza in un insieme di cluster separati.
 		
-		Il meccanismo di clustering prevede l'elezione di un rappresentante per cluster, chiamato \textit{R\textsubscript{i}}, che viene utilizzato come punto di riferimento per l'assegnazione di una nuova sottotraiettoria a un cluster.
 		
-		L'obiettivo di questa fase  è di minimizzare la somma delle distanze fra il rappresentante di ogni cluster e gli elementi che ne fanno parte
-\end{frame}
+		\column{.3\textwidth}
+		
+			\begin{itemize}
+			\item \textbf{$\epsilon$\textsubscript{sp}}: tolleranza spaziale.
+			\item \textbf{$\epsilon$\textsubscript{t}}: tolleranza temporale
+			\item \textbf{K}: limite inferiore al voting per rappresentante.
+			\item \textbf{$\alpha$}: soglia di coesione per i cluster. 
+		\end{itemize}
+		
+		\column{.3\textwidth}
+		
+	\begin{itemize}
+		\item \textbf{MinSize}: numero minimo di elementi
+		\item \textbf{MinSup}: limite inferiore al supporto
+		\item \textbf{MinCoh}: limite inferiore alla coesione per un itemset
+	\end{itemize}
+		
+	\end{columns}
+\end{frame}    
 
 \begin{frame}
-	\frametitle{Subtrajectory Clustering: implementazione}
- 	L'input per questa fase è una trasformazione di quello emesso al termine della fase due, occorre infatti determinare la similarità tra ogni sottotraiettoria prima di procedere con le operazioni di clustering.
- 	
- 	Sono aggiunti inoltre due parametri: $\alpha$ che rappresenta la distanza massima a cui una sottoraiettoria può essere da un rappresentante del cluster e \textit{K} che è un \textit{lower bound} sul voting(espresso nella fase due) per l'elezione dei rappresentanti.
- 	Alla fase di clustering segue poi una fase di raffinamento dei risultati, dove vengono eliminate sotto-traiettorie ripetute, si uniscono cluster simili e eventualmente si riassegnano gli outlier.\ 
-\end{frame}
+	\frametitle{Comparison: preprocessing}
+	\begin{columns}
+		
+		\column{.3\columnwidth}
+		\begin{center}
+			\textbf{\textit{\huge{GCMP}}}
+			
+		\end{center}
+		
+		\column{.3\columnwidth}
+		\begin{center}
+			\textbf{\textit{\huge{DSC}}}
+			
+		\end{center}
+		
+		\column{.3\columnwidth}
+		\begin{center}
+			\textbf{\textit{\huge{CMT}}}
+			
+		\end{center}
+	\end{columns}
+	\begin{columns}
+		
+		\column{.3\columnwidth}
+		
+		Unificazione degi campionamenti temporali in scala  (una volta sola per dataset)
+		
+		
+		\column{.3\textwidth}
+		
+		Unificazione degi campionamenti temporali in scala
+		
+		Costruzione istogramma \textit{equi-depth} sul tempo e partizionare i dati in \textit{buckets}
+		basati su questo  (una volta sola per dataset)
+		
+		\column{.3\textwidth}
+		
+		Calcolo dell'area in cui si muovono gli oggetti e generazione del reticolo di celle.
+		
+		Eventuale generazione di una misura univoca per il tempo e divisione in intervalli 
+		 (una volta sola per dataset)
+		
+	\end{columns}
+\end{frame}  
+
 
 \begin{frame}
-	\frametitle{Output}
-	Come output il framework presenta una serie di cluster di sotto-traiettorie e un insieme di outlier.
-\end{frame}
+	\frametitle{3 columns}
+	\begin{columns}
+		
+		\column{.3\columnwidth}
+		\begin{center}
+			\textbf{\textit{\huge{GCMP}}}
+			
+		\end{center}
+		
+		\column{.3\columnwidth}
+		\begin{center}
+			\textbf{\textit{\huge{DSC}}}
+			
+		\end{center}
+		
+		\column{.3\columnwidth}
+		\begin{center}
+			\textbf{\textit{\huge{CMT}}}
+			
+		\end{center}
+	\end{columns}
+	\begin{columns}
+		
+		\column{.3\columnwidth}
+		
+		GCMP 
+		
+		Lorem ipso dolorem, queri niesce ed faciam
+		
+		
+		\column{.3\textwidth}
+		DSC
+		
+		Lorem ipso dolorem, queri niesce ed faciam
+		
+		\column{.3\textwidth}
+		CMT
+		
+		Lorem ipso dolorem, queri niesce ed faciam
+	\end{columns}
+\end{frame}     
 
-\begin{frame}
-	\frametitle{DSC flow}
-\begin{center}
-	\includegraphics[scale=0.3]{DSC-flow}
-\end{center}
-\end{frame}
 
-\section{Conclusioni}
-\begin{frame}
-	\frametitle{Conclusioni}
-	Entrambi gli approcci presentati offrono un framework compatibile con le moderne tecnologie in ambito \textit{Big Data}, entrambe propongono soluzioni a un problema simile, tuttavia le idee e implementazioni dei due framework sono totalmente differenti tra loro.
-\end{frame}
-
-
-
-
-\begin{frame}
-\titlepage % Print the title page as the last slide
-\end{frame}
-
-%----------------------------------------------------------------------------------------
 
 \end{document}
