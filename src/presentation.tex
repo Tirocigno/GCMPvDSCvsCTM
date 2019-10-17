@@ -125,7 +125,7 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
 		
 		\column{.3\columnwidth}
 		\begin{center}
-			\textbf{\textit{\huge{CMT}}}
+			\textbf{\textit{\huge{CTM}}}
 			
 		\end{center}
 	\end{columns}
@@ -165,7 +165,7 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
 	
 		\column{.3\columnwidth}
 	\begin{center}
-		\textbf{\textit{\huge{CMT}}}
+		\textbf{\textit{\huge{CTM}}}
 		
 	\end{center}
 		\end{columns}
@@ -206,7 +206,7 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
 		
 		\column{.3\columnwidth}
 		\begin{center}
-			\textbf{\textit{\huge{CMT}}}
+			\textbf{\textit{\huge{CTM}}}
 			
 		\end{center}
 	\end{columns}
@@ -223,8 +223,9 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
 		Impiega una variante pesata di \textit{LCSS} che definisce un range spazio-temporale
 		
 		\column{.3\textwidth}
+		Nativamente ignorato.
 		
-		Consente di aggiungere la dimensione temporale alle celle.
+		Tuttavia è possibile aggiungere una dimensione temporale alle celle, rendendole di fatto cubi.
 		
 	\end{columns}
 \end{frame}    
@@ -247,7 +248,7 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
 		
 		\column{.3\columnwidth}
 		\begin{center}
-			\textbf{\textit{\huge{CMT}}}
+			\textbf{\textit{\huge{CTM}}}
 			
 		\end{center}
 	\end{columns}
@@ -301,7 +302,7 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
 		
 		\column{.3\columnwidth}
 		\begin{center}
-			\textbf{\textit{\huge{CMT}}}
+			\textbf{\textit{\huge{CTM}}}
 			
 		\end{center}
 	\end{columns}
@@ -316,7 +317,7 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
 		
 		Unificazione degi campionamenti temporali in scala
 		
-		Costruzione istogramma \textit{equi-depth} sul tempo e partizionare i dati in \textit{buckets}
+		Costruzione istogramma \textit{equi-depth} sul tempo e partizionamento dei dati in \textit{buckets}
 		basati su questo  (una volta sola per dataset)
 		
 		\column{.3\textwidth}
@@ -330,8 +331,34 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
 \end{frame}  
 
 
+
 \begin{frame}
-	\frametitle{3 columns}
+	\frametitle{Comparison: GCPM and CTM = Swarm}
+ \textit{Co-Movement} pattern in cui i vincoli temporali sono praticamente assenti, 
+ rimangono solamente quelli spaziali che possono essere mappati come segue:
+ 
+ \begin{center}
+ 	\textbf{M}\textless ---\textgreater  \textbf{minSize}
+ 	
+ 	\textbf{eps} \textless ---\textgreater  \textbf{minCoh}
+ 	
+ 	\textbf{minPts} \textless ---\textgreater  \textbf{minSupp}
+ 	
+ \end{center}
+Rilassando ogni vincolo temporale al massimo, il risultato ottenuto dalla ricerca di un pattern swarm può avvicinarsi molto all'output di \textit{CTM}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Comparison: DSC and CTM }
+E' impossibile rilasciare completamente vincolo temporale su DSC, data l'implementazione dell'algoritmo e il parizionamento dei dati in bucket di stessa densità.
+
+Si può provare a impostare una dimensione temporale sulle celle di \textit{CTM} coincidente con l'istogramma individuato per DSC, inoltre per determinare le sottosequenze si può provare a impostare come criterio di partizionamento delle traiettorie un cambio del vicinato.
+
+Tuttavia DSC rimane molto più preciso di CTM e molti itemset individuati da CTM sarebbero invece scartati da DSC(vedi esempio) 
+\end{frame}
+
+\begin{frame}
+	\frametitle{Comparison: Limits of each framework}
 	\begin{columns}
 		
 		\column{.3\columnwidth}
@@ -348,7 +375,7 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
 		
 		\column{.3\columnwidth}
 		\begin{center}
-			\textbf{\textit{\huge{CMT}}}
+			\textbf{\textit{\huge{CTM}}}
 			
 		\end{center}
 	\end{columns}
@@ -356,20 +383,25 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
 		
 		\column{.3\columnwidth}
 		
-		GCMP 
+\begin{itemize}
+	\item Assenza di pruning sulla base del principio Apriori su criterio spaziale
+	\item Coesione solamente locale agli snapshot, globalmente viene utilizzato
+	un \textit{density connected criteria}
+\end{itemize}
 		
-		Lorem ipso dolorem, queri niesce ed faciam
-		
-		
-		\column{.3\textwidth}
-		DSC
-		
-		Lorem ipso dolorem, queri niesce ed faciam
 		
 		\column{.3\textwidth}
-		CMT
+\begin{itemize}
+	\item Poca flessibilità.
+	\item L'idea di fondo è differente.
+\end{itemize}
+
 		
-		Lorem ipso dolorem, queri niesce ed faciam
+		\column{.3\textwidth}
+\begin{itemize}
+	\item Nessun supporto alla continuità negli istanti temporali.
+	\item Molto legato alla divisione della mappa in celle, raggruppamenti che stanno sui bordi potrebbero non essere riconosciuti.
+\end{itemize}
 	\end{columns}
 \end{frame}     
 
