@@ -88,7 +88,7 @@
 %	TITLE PAGE
 %----------------------------------------------------------------------------------------
 
-\title[Trajectory Clustering Comparison]{Trajectory Clustering Alghorithms - GCPM vs DSC vs CTM. } % The short title appears at the bottom of every slide, the full title is only on the title page
+\title[Trajectory Clustering Comparison]{Trajectory Clustering Alghorithms - GCMP vs DSC vs CTM. } % The short title appears at the bottom of every slide, the full title is only on the title page
 
 \author{Federico Naldini} % Your name
 \institute[Università di Bologna] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
@@ -174,17 +174,17 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
 			\column{.3\columnwidth}
 			
 			Utilizza un algoritmo di clustering 
-			\textit{density-based} o \textit{distance-based}
+			\textit{density-based} o \textit{distance-based}.
 		
 			
 				\column{.3\textwidth}
 		
-			Impiega una variante pesata di \textit{LCSS} che definisce un range spazio-temporale
+			Impiega una variante pesata di \textit{LCSS} che definisce un range spazio-temporale.
 			
 				\column{.3\textwidth}
 			    
 				Utilizza un criterio di raggruppamento basato sulla divisione dell'area
-				in cui si muovono gli oggetti in celle
+				in cui si muovono gli oggetti in celle.
 		\end{columns}
 	\end{frame}     
 
@@ -215,12 +215,12 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
 		\column{.3\columnwidth}
 		
 		\textit{Apriori Enumeration}: consente il pruning degli insiemi di oggetti
-		che non rispettano i criteri di \textit{L-Consecutivness} e \textit{G-connection}
+		che non rispettano i criteri di \textit{L-Consecutivness} e \textit{G-connection}.
 		
 		
 		\column{.3\textwidth}
 		
-		Impiega una variante pesata di \textit{LCSS} che definisce un range spazio-temporale
+		Impiega una variante pesata di \textit{LCSS} che definisce un range spazio-temporale.
 		
 		\column{.3\textwidth}
 		Nativamente ignorato.
@@ -257,10 +257,10 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
 		\column{.3\columnwidth}
 
 \begin{itemize}
-	\item \textbf{M}: numero minimo di elementi
-	\item \textbf{K}: numero minimo di istanti
-	\item \textbf{L}: lunghezza minima sottosequenze consecutive
-	\item \textbf{G}: massimo intervallo tra un istante e il successivo
+	\item \textbf{M}: numero minimo di elementi.
+	\item \textbf{K}: numero minimo di istanti.
+	\item \textbf{L}: lunghezza minima sottosequenze consecutive.
+	\item \textbf{G}: massimo intervallo tra un istante e il successivo.
 \end{itemize}
 		
 		
@@ -268,7 +268,7 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
 		
 			\begin{itemize}
 			\item \textbf{$\epsilon$\textsubscript{sp}}: tolleranza spaziale.
-			\item \textbf{$\epsilon$\textsubscript{t}}: tolleranza temporale
+			\item \textbf{$\epsilon$\textsubscript{t}}: tolleranza temporale.
 			\item \textbf{K}: limite inferiore al voting per rappresentante.
 			\item \textbf{$\alpha$}: soglia di coesione per i cluster. 
 		\end{itemize}
@@ -276,9 +276,9 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
 		\column{.3\textwidth}
 		
 	\begin{itemize}
-		\item \textbf{MinSize}: numero minimo di elementi
-		\item \textbf{MinSup}: limite inferiore al supporto
-		\item \textbf{MinCoh}: limite inferiore alla coesione per un itemset
+		\item \textbf{MinSize}: numero minimo di elementi.
+		\item \textbf{MinSup}: limite inferiore al supporto.
+		\item \textbf{MinCoh}: limite inferiore alla coesione per un itemset.
 	\end{itemize}
 		
 	\end{columns}
@@ -310,22 +310,22 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
 		
 		\column{.3\columnwidth}
 		
-		Unificazione degi campionamenti temporali in scala  (una volta sola per dataset)
+		Unificazione dei campionamenti temporali in scala  (una volta sola per dataset).
 		
 		
 		\column{.3\textwidth}
 		
-		Unificazione degi campionamenti temporali in scala
+		Unificazione dei campionamenti temporali in scala.
 		
 		Costruzione istogramma \textit{equi-depth} sul tempo e partizionamento dei dati in \textit{buckets}
-		basati su questo  (una volta sola per dataset)
+		basati su questo  (una volta sola per dataset).
 		
 		\column{.3\textwidth}
 		
 		Calcolo dell'area in cui si muovono gli oggetti e generazione del reticolo di celle.
 		
 		Eventuale generazione di una misura univoca per il tempo e divisione in intervalli 
-		 (una volta sola per dataset)
+		 (una volta sola per dataset).
 		
 	\end{columns}
 \end{frame}  
@@ -333,7 +333,7 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
 
 
 \begin{frame}
-	\frametitle{Comparison: GCPM and CTM = Swarm}
+	\frametitle{Comparison: GCMP and CTM = Swarm}
  \textit{Co-Movement} pattern in cui i vincoli temporali sono praticamente assenti, 
  rimangono solamente quelli spaziali che possono essere mappati come segue:
  
@@ -345,7 +345,7 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
  	\textbf{minPts} \textless ---\textgreater  \textbf{minSupp}
  	
  \end{center}
-Rilassando ogni vincolo temporale al massimo, il risultato ottenuto dalla ricerca di un pattern swarm può avvicinarsi molto all'output di \textit{CTM}
+Rilassando ogni vincolo temporale al massimo, il risultato ottenuto dalla ricerca di un pattern swarm può avvicinarsi molto all'output di \textit{CTM}.
 \end{frame}
 
 \begin{frame}
@@ -354,7 +354,7 @@ E' impossibile rilasciare completamente vincolo temporale su DSC, data l'impleme
 
 Si può provare a impostare una dimensione temporale sulle celle di \textit{CTM} coincidente con l'istogramma individuato per DSC, inoltre per determinare le sottosequenze si può provare a impostare come criterio di partizionamento delle traiettorie un cambio del vicinato.
 
-Tuttavia DSC rimane molto più preciso di CTM e molti itemset individuati da CTM sarebbero invece scartati da DSC(vedi esempio) 
+Tuttavia DSC rimane molto più preciso di CTM e molti itemset individuati da CTM sarebbero invece scartati da DSC(vedi esempio) .
 \end{frame}
 
 \begin{frame}
@@ -384,9 +384,9 @@ Tuttavia DSC rimane molto più preciso di CTM e molti itemset individuati da CTM
 		\column{.3\columnwidth}
 		
 \begin{itemize}
-	\item Assenza di pruning sulla base del principio Apriori su criterio spaziale
+	\item Assenza di pruning sulla base del principio Apriori su criterio spaziale.
 	\item Coesione solamente locale agli snapshot, globalmente viene utilizzato
-	un \textit{density connected criteria}
+	un \textit{density connected criteria}.
 \end{itemize}
 		
 		
