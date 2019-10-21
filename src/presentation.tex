@@ -108,6 +108,15 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
 %------------------------------------------------
 
 \begin{frame}
+	\frametitle{CTM: Overview}
+	Framework per l'identificazione di gruppi di oggetti che hanno viaggiato assieme per un certo periodo di tempo.
+	
+	Si basa sulla divisione dell'area di viaggio degli oggetti in una griglia di celle, per ogni cella vengono raggruppate le traiettorie che sono passate da lì.
+	
+	A questo punto le celle vengono identificate come le transazioni, le traiettorie come item e tramite l'algoritmo \textit{Apriori} si generano e si restituiscono in output tutti i \textit{frequent closed itemset}.
+\end{frame}
+
+\begin{frame}
 	\frametitle{Comparison: Overview}
 	\begin{columns}
 		
@@ -276,9 +285,9 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
 		\column{.3\textwidth}
 		
 	\begin{itemize}
-		\item \textbf{MinSize}: numero minimo di elementi.
-		\item \textbf{MinSup}: limite inferiore al supporto.
-		\item \textbf{MinCoh}: limite inferiore alla coesione per un itemset.
+		\item \textbf{MinSize}: numero minimo di elementi per un raggruppamento.
+		\item \textbf{MinSup}: minimo di percorsi assieme in x celle.
+		\item \textbf{MinCoh}: minimo coesione per un itemset.
 	\end{itemize}
 		
 	\end{columns}
@@ -340,9 +349,8 @@ Alma Mater Studiorum - Università di Bologna, Cesena. \\ % Your institution for
  \begin{center}
  	\textbf{M}\textless ---\textgreater  \textbf{minSize}
  	
- 	\textbf{eps} \textless ---\textgreater  \textbf{minCoh}
+ 	\textbf{eps} \textless ---\textgreater  \textbf{minCoh} (valido solo in locale)
  	
- 	\textbf{minPts} \textless ---\textgreater  \textbf{minSupp}
  	
  \end{center}
 Rilassando ogni vincolo temporale al massimo, il risultato ottenuto dalla ricerca di un pattern swarm può avvicinarsi molto all'output di \textit{CTM}.
